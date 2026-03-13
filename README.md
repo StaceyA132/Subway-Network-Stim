@@ -79,4 +79,3 @@ Future enhancements could include:
 Feel free to explore and extend the simulation for research, teaching, or hobby projects! 
 
 *– README generated based on project description provided by user.*
-# Subway-Network-Stim

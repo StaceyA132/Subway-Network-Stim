@@ -1,0 +1,3 @@
+[console_scripts]
+subway-sim = subway_sim.main:run
+

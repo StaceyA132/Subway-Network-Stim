@@ -1,0 +1,2 @@
+## Requirements for subway_sim project
+# currently there are no third-party dependencies; add them here as needed

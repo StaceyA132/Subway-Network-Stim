@@ -18,11 +18,24 @@ def run():
     """Start the subway simulation.
 
     Sets up a simple network and runs a basic simulation loop.
+    If Tkinter is available, launches a dashboard; otherwise, runs in console.
     """
+
+    try:
+        import tkinter as tk
+        from .dashboard import run_with_dashboard
+        run_with_dashboard()
+    except ImportError:
+        # Fallback to console simulation
+        run_console()
+
+
+def run_console():
+    """Console-based simulation (fallback if Tkinter not available)."""
 
     logging.basicConfig(level=logging.INFO)
 
-    LOGGER.info("Starting subway network simulation")
+    LOGGER.info("Starting subway network simulation (console mode)")
 
     # Create components
     segment = TrackSegment("A1", length=200.0)

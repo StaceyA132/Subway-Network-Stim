@@ -1,81 +1,131 @@
 # Subway Network Simulation & Monitoring Dashboard
 
-> **Small-scale transit simulation with real-time monitoring & alerts**
+> **Python-based subway network simulation with real-time monitoring & fault injection**
 
 ## 📝 Project Overview
-This repository contains a Python-based simulation of a subway network. The system models multiple lines, stations, trains, signal lights, switches, and occupancy sensors. It runs as a real‑time emulator, continuously updating train positions and infrastructure status, and includes mechanisms for fault injection, conflict detection, logging, and visualization.
+This repository contains a Python-based simulation of a subway network system. The simulation models a single track segment with switches, occupancy sensors, signal lights, and a moving train. It includes random fault injection for realistic MTA-like behavior, comprehensive logging, and an optional Tkinter-based dashboard for real-time visualization.
 
-Developers and engineers can use the simulation to study operations, exercise monitoring dashboards, and verify alert logic before deploying to physical or larger‑scale systems.
+The project demonstrates modular software design, real-time simulation techniques, and GUI development in Python. It's suitable for learning about transit system operations, fault simulation, and monitoring dashboard development.
 
 ## 🚆 Key Features
 
-- **Real‑time train movement** – Trains progress along predefined routes on simulated schedules.
-- **Signal & switch monitoring** – Track state of lights and point devices; support simulated failures and misalignments.
-- **Occupancy conflict detection** – Automatically identify when two trains would occupy the same track segment.
-- **Event logging** – Every state change, fault, and alert is timestamped for post‑analysis or audit.
-- **Dashboard visualization** – Console or web‑based interface (via Flask/Tkinter) displaying network state and active alerts.
+- **Real-time train movement** – Single train moves along a track segment at configurable speed
+- **Signal & switch control** – Signal lights (green/red) and track switches with position states
+- **Occupancy sensors** – Detect when track segments are occupied by trains
+- **Fault simulation** – Random signal failures and switch misalignments for realistic testing
+- **Event logging** – Timestamped logging of all system events and alerts
+- **Visual dashboard** – Tkinter-based GUI showing real-time status (optional, falls back to console)
+- **Modular architecture** – Clean separation of track, train, signal, and dashboard components
 
 ## 🛠️ Technologies Used
 
-- **Python** – Core simulation logic and control.
-- **Logging module** – Timestamped, leveled event output.
-- **Random/Simulation logic** – Behavioral modeling and fault injection.
-- **Matplotlib** *(optional)* – Plotting of network status or train trajectories.
-- **Flask / Tkinter** *(optional)* – Dashboard front‑end for real‑time display.
+- **Python 3.9+** – Core simulation logic and control
+- **Tkinter** – GUI framework for the monitoring dashboard
+- **Logging module** – Structured event logging with timestamps
+- **Random** – Fault injection and behavioral simulation
+- **Threading** – Background simulation updates for the GUI
+- **Setuptools** – Package management and command-line entry points
 
 ## 🎯 Skills Demonstrated
 
-- System‑level simulation of electronics and operations
-- Real‑time monitoring & alert generation
-- Software/hardware integration patterns
-- Data logging and visualization for operational analysis
+- Object-oriented design for simulation components
+- Real-time system simulation and state management
+- GUI development with Tkinter
+- Fault injection and error handling
+- Modular package structure and Python packaging
+- Version control with Git and GitHub
 
 ## 📁 Repository Structure
 ```
-subway_sim/          # Python package for simulation components
-  __init__.py        # package initializer
-  signal.py          # signal light classes and logic
-  track.py           # track segments, switches, occupancy sensors
-  train.py           # train movement and routing
-  monitor.py         # conflict detection and alerting
-  dashboard.py       # optional visualization code
+subway_sim/              # Main Python package
+├── __init__.py          # Package initialization and run() export
+├── main.py              # Entry point with simulation loop and dashboard integration
+├── track.py             # TrackSegment, Switch, and OccupancySensor classes
+├── train.py             # Train class with movement logic
+├── signal.py            # Signal class with states and fault simulation
+└── dashboard.py         # Tkinter GUI for real-time monitoring
+
+setup.py                 # Package configuration with entry points
+requirements.txt         # Dependency list (currently empty)
+.gitignore              # Excludes venv and cache files
+README.md               # This file
 ```
 
-*(Note: the files above are placeholders; populate them as the simulation grows.)*
-
 ## 🚀 Getting Started
-1. Clone the repository.
-2. Create a virtual environment: `python -m venv venv && source venv/bin/activate`.
-3. Install dependencies (if any) listed in `requirements.txt` or install the
-  package in editable mode:
 
-  ```sh
-  pip install -e .
-  ```
+### Prerequisites
+- Python 3.9 or later
+- Tkinter (GUI library) - included with most Python installations, but on macOS may require: `brew install python-tk@3.9`
 
-4. Start the simulation:
+### Installation
+1. Clone the repository:
+   ```sh
+   git clone https://github.com/StaceyA132/Subway-Network-Stim.git
+   cd "Subway Network Simulation & Monitoring Dashboard"
+   ```
 
-  ```sh
-  # using the installed package
-  subway-sim
+2. Create and activate a virtual environment:
+   ```sh
+   python -m venv .venv
+   source .venv/bin/activate  # On Windows: .venv\Scripts\activate
+   ```
 
-  # or via the module runner
-  python -m subway_sim
-  ```
+3. Install the package in editable mode:
+   ```sh
+   pip install -e .
+   ```
 
-  Both commands invoke the `run()` stub currently defined in
-  `subway_sim/main.py`.
+### Running the Simulation
 
-## 📚 Further Development
-Future enhancements could include:
+Start the simulation with the visual dashboard:
+```sh
+subway-sim
+```
 
-- WebSocket integration for continuous dashboard updates
-- A REST API for external control or data extraction
-- Expanded fault models and performance metrics
-- Exportable logs for offline visualization
+Or run directly with Python:
+```sh
+python -m subway_sim
+```
+
+The simulation will:
+- Launch a Tkinter window showing real-time status
+- Run for ~20 seconds with random fault injection
+- Log all events to the console
+- Fall back to console-only mode if Tkinter is unavailable
+
+### Alternative: Console Mode
+If you prefer console output only, modify `subway_sim/main.py` to call `run_console()` instead of `run()`.
+
+## 📊 Simulation Details
+
+The current simulation includes:
+- **Track Infrastructure**: Single 200m track segment with switch and occupancy sensor
+- **Train**: Moves at 5 m/s, stops if signal is red
+- **Signal**: Green/red states with random fault simulation (10% chance per second)
+- **Switch**: Normal/diverted positions with random misalignment faults
+- **Dashboard**: Real-time GUI updates showing all component states and event logs
+
+## 🔄 Version Control
+This project is hosted on GitHub at: https://github.com/StaceyA132/Subway-Network-Stim
+
+All major features were developed incrementally and committed with descriptive messages, demonstrating proper Git workflow practices.
+
+## 📚 Future Enhancements
+The modular design makes it easy to extend with additional features:
+
+- **Multiple Trains**: Add concurrent train movement and collision avoidance
+- **Expanded Network**: Multiple track segments forming a complete subway line
+- **Conflict Detection**: Advanced monitoring for occupancy conflicts and safety alerts
+- **Web Dashboard**: Flask-based web interface for remote monitoring
+- **Performance Metrics**: Speed tracking, delay analysis, and efficiency reports
+- **Configuration Files**: JSON/YAML for customizable simulation parameters
+- **Data Export**: CSV/JSON logs for analysis and visualization
+
+## 🤝 Contributing
+Feel free to fork the repository and submit pull requests for new features or improvements!
 
 ---
 
-Feel free to explore and extend the simulation for research, teaching, or hobby projects! 
+*Built with Python • Simulated with care • Monitored in real-time*
 
-*– README generated based on project description provided by user.*
+*README updated to reflect completed implementation*

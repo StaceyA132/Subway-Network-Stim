@@ -4,9 +4,10 @@ This module defines run() which sets up a basic simulation with tracks, trains, 
 """
 
 import logging
+import random
 import time
 
-from .track import TrackSegment
+from .track import TrackSegment, Switch
 from .train import Train
 from .signal import Signal
 
@@ -25,6 +26,7 @@ def run():
 
     # Create components
     segment = TrackSegment("A1", length=200.0)
+    switch = Switch("SW1")
     train = Train("T001", speed=5.0)  # 5 m/s
     signal = Signal("S1", initial_state="green")
 
@@ -32,10 +34,19 @@ def run():
     train.set_segment(segment)
 
     # Simulation loop
-    duration = 10  # seconds
+    duration = 20  # seconds, extended for faults
     start_time = time.time()
 
     while time.time() - start_time < duration:
+        # Randomly introduce faults
+        if random.random() < 0.1:  # 10% chance per second
+            if random.choice([True, False]):
+                signal.simulate_fault()
+                LOGGER.error("ALERT: Signal failure detected!")
+            else:
+                switch.set_position("diverted")
+                LOGGER.error("ALERT: Switch misalignment detected!")
+
         # Move train
         train.move(1.0)  # move for 1 second
 
@@ -45,7 +56,7 @@ def run():
             break
 
         # Log status
-        LOGGER.info(f"Status: {train} | {signal}")
+        LOGGER.info(f"Status: {train} | {signal} | {switch}")
 
         time.sleep(1)  # real-time delay
 

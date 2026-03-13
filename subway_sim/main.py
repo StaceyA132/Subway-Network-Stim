@@ -17,10 +17,11 @@ LOGGER = logging.getLogger(__name__)
 def run():
     """Start the subway simulation.
 
-    Runs in console mode by default. For dashboard, use run_with_dashboard() directly.
+    Launches the Tkinter dashboard.
     """
 
-    run_console()
+    from .dashboard import run_with_dashboard
+    run_with_dashboard()
 
 
 def run_console():
